@@ -309,11 +309,11 @@ var controller = {
     getImage: (req, res) => {
 
         var file = req.params.image;
-        //var path_file = './upload/articles/' + file;
+        var path_file = './upload/articles/' + file;
 
         // CORRECCIÓN DE RUTA: Usa path.join para compatibilidad y la ruta correcta
         // __dirname es el directorio actual; '..' sube al directorio principal.
-        var path_file = path.join(__dirname, '..', 'uploads', 'articles', file); // <-- RUTA CORREGIDA
+        //var path_file = path.join(__dirname, '..', 'uploads', 'articles', file); // <-- RUTA CORREGIDA
 
         fs.exists(path_file, (exists) => {
 
