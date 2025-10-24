@@ -243,15 +243,24 @@ var controller = {
              });
         }
 
-        //conseguir el nombre y la extension del archivo
-        var file_path = req.files.file0.path;
-        var file_split = file_path.split('\\');
+        //conseguir el nombre y la extension del archivo solo en windows
+        //var file_path = req.files.file0.path;
+        //var file_split = file_path.split('\\');
 
         /**ADVERTENCIA EN LINUX O MAC */
         //var file_split = file_path.split('/');
 
         // NOMBRE DEL ARCHIVO
-        var file_name = file_split[2];
+        //var file_name = file_split[2];
+
+        //CODIGO QUE FUNCIONA EN PRODUCCION
+        // CÓDIGO CLAVE PARA LA RUTA: Usar '/' para Linux (Railway)
+        var file_path = req.files.file0.path;
+        var file_split = file_path.split('/'); // <-- CAMBIO A BARRA INCLINADA '/'
+        
+        // NOMBRE DEL ARCHIVO: Ya que estamos usando la barra de Linux, 
+        // el nombre del archivo siempre será el ÚLTIMO elemento del array.
+        var file_name = file_split[file_split.length - 1]; // <-- MEJOR MANERA DE OBTENER EL NOMBRE
 
         //extension del fichero
         var extension_split = file_name.split('\.');
@@ -300,7 +309,11 @@ var controller = {
     getImage: (req, res) => {
 
         var file = req.params.image;
-        var path_file = './upload/articles/' + file;
+        //var path_file = './upload/articles/' + file;
+
+        // CORRECCIÓN DE RUTA: Usa path.join para compatibilidad y la ruta correcta
+        // __dirname es el directorio actual; '..' sube al directorio principal.
+        var path_file = path.join(__dirname, '..', 'uploads', 'articles', file); // <-- RUTA CORREGIDA
 
         fs.exists(path_file, (exists) => {
 
